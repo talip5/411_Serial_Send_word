@@ -21,7 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +48,11 @@ UART_HandleTypeDef huart2;
 uint32_t data_Rx=66;
 uint32_t data_Tx=65;
 uint8_t control=0;
+//uint32_t word5[] ={65};
+char word5[] = "merhaba";
+uint32_t word5_count=0;
+uint8_t len5=0;
+uint8_t sizeof_len=0;
 
 /* USER CODE END PV */
 
@@ -94,17 +100,35 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  //USART2->DR='A';
+  word5_count = sizeof(word5)/sizeof(word5[0]);
+  len5=strlen(word5);
+  sizeof_len = sizeof(word5);
   /* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
+
 		//HAL_GPIO_WritePin(LED15_GPIO_Port,LED15_Pin,GPIO_PIN_SET);
-		//HAL_GPIO_TogglePin(LED15_GPIO_Port,LED15_Pin);
+		HAL_GPIO_TogglePin(LED15_GPIO_Port,LED15_Pin);
+		HAL_Delay(1000);
+		//USART2->DR = 67;
+/*
+		data_Rx = USART2->DR;
+		while(USART2->SR & USART_SR_RXNE){
+			HAL_GPIO_TogglePin(LED15_GPIO_Port,LED15_Pin);
+			//data_Rx = USART2->DR;
+			HAL_Delay(100);
+			USART2->DR=data_Rx;
+			HAL_Delay(100);
+			USART2->CR1 &=~(USART_CR1_TE);
+		}
+		USART2->CR1 |=(USART_CR1_TE);
+		*///data_Rx = USART2->DR;
 
 		//USART2->DR='Z';
-		if (control < 12) {
+		/*if (control < 12) {
 			HAL_GPIO_WritePin(LED15_GPIO_Port, LED15_Pin, GPIO_PIN_SET);
 			data_Rx = USART2->DR;
 			if(control<2){
@@ -120,7 +144,7 @@ int main(void)
 			HAL_Delay(500);
 			control++;
 
-		}
+		}*/
 
 		/* USER CODE END WHILE */
 
