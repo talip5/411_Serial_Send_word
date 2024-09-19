@@ -104,13 +104,22 @@ int main(void)
   word5_count = sizeof(word5)/sizeof(word5[0]);
   len5=strlen(word5);
   sizeof_len = sizeof(word5);
+  for (int var = 0; var < len5; ++var) {
+	USART2->DR =word5[var];
+	HAL_Delay(100);
+}
   /* USER CODE END 2 */
 
-	/* Infinite loop */
-	/* USER CODE BEGIN WHILE */
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
 	while (1) {
+		data_Rx = USART2->DR;
+		if(data_Rx==65 || data_Rx==66 ){
+			HAL_GPIO_TogglePin(LED12_GPIO_Port,LED12_Pin);
+			USART2->DR=data_Rx;
+			HAL_Delay(100);
 
-		//HAL_GPIO_WritePin(LED15_GPIO_Port,LED15_Pin,GPIO_PIN_SET);
+		}
 		HAL_GPIO_TogglePin(LED15_GPIO_Port,LED15_Pin);
 		HAL_Delay(1000);
 		//USART2->DR = 67;
@@ -146,7 +155,7 @@ int main(void)
 
 		}*/
 
-		/* USER CODE END WHILE */
+    /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
@@ -249,14 +258,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED15_GPIO_Port, LED15_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, LED12_Pin|LED13_Pin|LED14_Pin|LED15_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : LED15_Pin */
-  GPIO_InitStruct.Pin = LED15_Pin;
+  /*Configure GPIO pins : LED12_Pin LED13_Pin LED14_Pin LED15_Pin */
+  GPIO_InitStruct.Pin = LED12_Pin|LED13_Pin|LED14_Pin|LED15_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED15_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
